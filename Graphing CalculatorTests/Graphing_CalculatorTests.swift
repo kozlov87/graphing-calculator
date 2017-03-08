@@ -2,9 +2,6 @@
 //  Graphing_CalculatorTests.swift
 //  Graphing CalculatorTests
 //
-//  Created by Иван Павлов on 27.07.15.
-//  Copyright (c) 2015 Иван Павлов. All rights reserved.
-//
 
 import UIKit
 import XCTest
@@ -28,7 +25,7 @@ class Graphing_CalculatorTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock() {
+        self.measure() {
             // Put the code you want to measure the time of here.
         }
     }

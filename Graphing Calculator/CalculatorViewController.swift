@@ -2,9 +2,6 @@
 //  ViewController.swift
 //  Calculator_1
 //
-//  Created by Иван Павлов on 06.07.15.
-//  Copyright (c) 2015 Иван Павлов. All rights reserved.
-//
 
 import UIKit
 
@@ -15,8 +12,8 @@ class CalculatorViewController: UIViewController {
     var userIsInTheMiddleOfTypingANumber = false
     var brain = CalculatorBrain()
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        var destination = segue.destinationViewController as?UIViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var destination = segue.destination as?UIViewController
         if let navCon = destination as? UINavigationController {
             destination = navCon.visibleViewController
         }
@@ -32,10 +29,10 @@ class CalculatorViewController: UIViewController {
         }
     }
     
-    @IBAction func appendDIgit(sender: UIButton) {
+    @IBAction func appendDIgit(_ sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
-            if (digit != "." || display.text!.rangeOfString(".") == nil) {
+            if (digit != "." || display.text!.range(of: ".") == nil) {
                 display.text = display.text! + digit
             }
         } else {
@@ -46,7 +43,7 @@ class CalculatorViewController: UIViewController {
     
     var displayValue : Double? {
         get {
-            if let result = NSNumberFormatter().numberFromString(display.text!) {
+            if let result = NumberFormatter().number(from: display.text!) {
                 return result.doubleValue
             }
             return nil
@@ -59,7 +56,7 @@ class CalculatorViewController: UIViewController {
         }
     }
     
-    @IBAction func operate(sender: UIButton) {
+    @IBAction func operate(_ sender: UIButton) {
         if userIsInTheMiddleOfTypingANumber {
             enter();
         }
@@ -68,7 +65,7 @@ class CalculatorViewController: UIViewController {
         }
     }
     
-    @IBAction func enterConstant(sender: UIButton) {
+    @IBAction func enterConstant(_ sender: UIButton) {
         let symbol = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
             enter()
@@ -91,8 +88,8 @@ class CalculatorViewController: UIViewController {
         displayValue = 0
     }
     @IBAction func backspace() {
-        display.text = dropLast(display.text!)
-        if count(display.text!) == 0 {
+        display.text = "\(display.text!.characters.removeLast())"
+        if display.text!.characters.count == 0 {
             userIsInTheMiddleOfTypingANumber = false
             display.text = "0"
         }
@@ -100,11 +97,11 @@ class CalculatorViewController: UIViewController {
     @IBAction func changeSign() {
         let operation = "±"
         if userIsInTheMiddleOfTypingANumber {
-            if display.text?.rangeOfString("-") == nil {
+            if display.text?.range(of: "-") == nil {
                 display.text = "-" + display.text!
             }
             else {
-               display.text = dropFirst(display.text!)
+               display.text = "\(display.text!.characters.removeLast())"
             }
         }
         else {
@@ -117,7 +114,7 @@ class CalculatorViewController: UIViewController {
         displayValue = brain.evaluate()
     }
     
-    @IBAction func enterVariable(sender: UIButton) {
+    @IBAction func enterVariable(_ sender: UIButton) {
         if userIsInTheMiddleOfTypingANumber {
             enter()
         }

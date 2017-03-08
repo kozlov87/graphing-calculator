@@ -2,14 +2,11 @@
 //  GrapherView.swift
 //  Graphing Calculator
 //
-//  Created by Иван Павлов on 28.07.15.
-//  Copyright (c) 2015 Иван Павлов. All rights reserved.
-//
 
 import UIKit
 
 protocol GrapherViewDataSource: class {
-    func evaluationForVariable(x : Double) -> Double?
+    func evaluationForVariable(_ x : Double) -> Double?
 }
 
 @IBDesignable
@@ -34,7 +31,7 @@ class GrapherView: UIView {
     @IBInspectable
     var pointsOnView = 100 { didSet{setNeedsDisplay() } }
     
-    private func bezierPathForFunction() -> UIBezierPath {
+    fileprivate func bezierPathForFunction() -> UIBezierPath {
         var path = UIBezierPath()
         let width = bounds.width
         let height = bounds.height
@@ -58,15 +55,15 @@ class GrapherView: UIView {
             currentPoint += distancePerPoint
         }
         if points.count > 0 {
-            path.moveToPoint(points[0])
+            path.move(to: points[0])
             for point in points {
-                path.addLineToPoint(point)
+                path.addLine(to: point)
             }
         }
         return path
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         drawer.drawAxesInRect(bounds, origin: originCenter, pointsPerUnit: pointsPerUnit)
         bezierPathForFunction().stroke()
     }
